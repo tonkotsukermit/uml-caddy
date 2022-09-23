@@ -1,24 +1,24 @@
 @startuml {{ .uml.name | default "UML Output" }}
 
-if {{ .uml.include }}
+{{ if .uml.include }}
   !include {{ .uml.include }}
 {{ end }}
 
-if {{ .uml.header }}
+{{ if .uml.header }}
   header {{ .uml.header }}
 {{ end }}
 
-if {{ .uml.title }}
+{{ if .uml.title }}
   title {{ .uml.title }}
 {{ end }}
 
-if {{ .k8s }}
+{{ if .k8s }}
 
   {{ include "k8s_base.tmpl" }}
 
 {{ end }}
 
-if {{ .terraform }}
+{{ if .terraform }}
 
   {{ include "terraform_base.tmpl" }}
 
