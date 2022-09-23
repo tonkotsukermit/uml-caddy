@@ -1,7 +1,7 @@
 package template
 
 import (
-	"html/template"
+	"text/template"
 	"io"
 
 	"github.com/Masterminds/sprig/v3"
@@ -14,7 +14,7 @@ type Template struct {
 }
 
 // Execute executes a templating function with a default sprig implementation to the provided io,Writer
-func (t* Template) Execute(data any) error {
+func (t *Template) Execute(data any) error {
 
 	// This example illustrates that the FuncMap *must* be set before the
 	// templates themselves are loaded.

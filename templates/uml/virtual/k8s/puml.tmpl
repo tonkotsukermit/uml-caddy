@@ -8,7 +8,7 @@
   title {{ .Title }}
 {{ end }}
 
-{{ include "k8s_virtual_base.tmpl" }}
+{{ template "k8s_virtual_base.tmpl" .K8s }}
 
 
 @enduml

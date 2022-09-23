@@ -19,7 +19,7 @@ type UML struct {
 
 type K8sUML struct {
 	UML
-	importer.K8sResources
+	K8s	importer.K8sResources
 }
 
 func (k *K8sUML) GenerateK8sUML(ctx context.Context, kubeconfig string) error{
@@ -31,10 +31,15 @@ func (k *K8sUML) GenerateK8sUML(ctx context.Context, kubeconfig string) error{
 		return err
 	}
 
-	k.K8sResources = *kube
+	k.K8s = *kube
+
+	err = k.K8s.GetResources()
+	if err != nil {
+		return err
+	}
 
 	t := template.Template{
-		Name:   "k8sUML",
+		Name:   "puml.tmpl",
 		Path:   k.TemplatePath,
 		Output: k.Output,
 	}

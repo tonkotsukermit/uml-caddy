@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"os"
+	"path/filepath"
 
 	"github.com/chunk-hunkman/uml-caddy/pkg/uml"
+	"k8s.io/client-go/util/homedir"
 )
 
 const (
@@ -20,7 +22,7 @@ func main(){
 	if err != nil {
 		panic(err)
 	}
-
+	
 	ctx := context.Background()
 
 	u := uml.K8sUML{
@@ -33,9 +35,9 @@ func main(){
 		},
 	}
 
-	err = u.GenerateK8sUML(ctx, "~./kube/kubeconfig")
+	err = u.GenerateK8sUML(ctx, filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil{
 		panic(err)
 	}
-	
+
 }

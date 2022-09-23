@@ -1,22 +1,23 @@
-node {{ .metadata.name | quote }} <<Pod>> {
-  {{ range $i, $c := .spec.containers }}
+componant {{ .ObjectMeta.Name | quote }} <<Pod>> {
+  {{ range $i, $c := .Spec.Containers }}
   {{if $i}}==={{end}}
-    {{ if $c.name }}{{ $c.name }}{{ end }}
+    {{ if $c.Name }}{{ $c.Name }}{{ end }}
     ...
-    {{ $c.image }}
+    {{ $c.Image }}
     ---
     Ports
-    {{ range $idx, $p := $c.ports }}
+    {{ range $idx, $p := $c.Ports }}
     {{ if $idx }}...{{end}}
-      - {{ if $p.name }}{{ $p.name }}{{ end }}
-        {{ if $p.containerPort }}{{ $p.containerPort }}{{ end }}
+      - {{ if $p.Name }}{{ $p.Name }}{{ end }}
+        {{ if $p.ContainerPort }}port: {{ $p.ContainerPort }}{{ end }}
     {{ end }}
   {{ end }}
-  if {{ .spec.volumes }}
+  {{ if .Spec.Volumes }}
   ===
-    {{ range $i, $v := .spec.volumes }}
-      name: {{ $v.name }}
-      {{ if $v.secret }} secret: {{ $v.secret }}{{ end }}
-      {{ if $v.configmap }} configmap: {{ $v.configmap }}{{ end }}
+    {{ range $i, $v := .Spec.Volumes }}
+      name: {{ $v.Name }}
+      {{ if $v.Secret }} secret: {{ $v.Secret.Name }}{{ end }}
+      {{ if $v.ConfigMap }} configmap: {{ $v.ConfigMap.Name }}{{ end }}
+    {{ end }}
   {{ end }}
 }

@@ -1,4 +1,4 @@
-frame {{ .metadata.name | quote }} <<Deployment>> {
-  {{ .spec.replicas }}
-  {{ template "pod.tmpl" .spec.template }}
+frame {{ .ObjectMeta.Name | quote }} <<Deployment>> {
+  {{ .Spec.Replicas }}
+  {{ template "pod.tmpl" .Spec.Template }}
 }

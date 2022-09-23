@@ -28,6 +28,7 @@ type Namespace struct {
 
 
 func buildConfig(kubeconfig string) (*rest.Config, error) {
+
 	if kubeconfig != "" {
 		cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 		if err != nil {
