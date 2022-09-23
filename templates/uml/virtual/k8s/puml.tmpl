@@ -1,0 +1,14 @@
+@startuml {{ .Name | default "UML Output" }}
+
+{{ if .Header}}
+  header {{ .Header }}
+{{ end }}
+
+{{ if .Title }}
+  title {{ .Title }}
+{{ end }}
+
+{{ include "k8s_virtual_base.tmpl" }}
+
+
+@enduml

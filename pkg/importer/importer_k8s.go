@@ -43,7 +43,8 @@ func buildConfig(kubeconfig string) (*rest.Config, error) {
 	return cfg, nil
 }
 
-func (k* K8sResources) New(ctx context.Context, kubeconfig string) (*K8sResources, error) {
+//New creates a new *K8sResources struct with a provided context and kubeconfig. If kubeconfig is blank, it will assume an in-cluster configuration
+func (k *K8sResources) New(ctx context.Context, kubeconfig string) (*K8sResources, error) {
 
 	c, err := buildConfig(kubeconfig)
 	if err != nil{
@@ -64,8 +65,8 @@ func (k* K8sResources) New(ctx context.Context, kubeconfig string) (*K8sResource
 	return k, nil
 }
 
-
-func (k* K8sResources)GetResources() error {
+//GetResources retrieves all the pre-configured resources to populate the struct utilizing the built in k8s client
+func (k *K8sResources)GetResources() error {
 
 
 	ns, err := k.Client.CoreV1().Namespaces().List(k.Context, metav1.ListOptions{})
