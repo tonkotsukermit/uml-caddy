@@ -41,3 +41,7 @@ Input Infrastructure resources, output plantuml
 Infrastructure resources should have a defined template utilizing 
     - [golang templating syntax](https://pkg.go.dev/text/template)
     - [sprig](https://github.com/Masterminds/sprig)
+
+Other tooling
+    - [k8s client](https://github.com/kubernetes/client-go)
+    - [chi router](https://github.com/go-chi/chi)

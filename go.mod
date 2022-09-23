@@ -41,6 +41,7 @@ require (
 
 require (
 	github.com/Masterminds/sprig/v3 v3.2.2
+	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect

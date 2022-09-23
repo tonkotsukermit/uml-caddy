@@ -1,8 +1,2 @@
-uml:
-  name: "My fancy UML"
-  title: "Showing off UMLs"
-  header: "an example of a header"
-
-k8s:
-  kubeConfig: ~/.kube/config.yaml
-  
+plantuml:
+  endpoint: "uml:8090"
