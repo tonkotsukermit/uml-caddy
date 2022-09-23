@@ -1,8 +1,6 @@
-#kubectl config view; for each if possible
-node {{ .name | quote }} <<Kubernetes Cluster>>{
-  args: {{ marshal .user.exec.args }}
- {{ if .namespaces }}
-   {{ range $i, $n := .namespaces }}
+node {{ .Name | quote }} <<Kubernetes Cluster>>{
+ {{ if .Namespaces }}
+   {{ range $i, $n := .Namespaces }}
       {{ template "namespaces.tmpl" $n }}
    {{ end }}
  {{ end }}

@@ -1,8 +1,6 @@
-
-Package {{ .name | quote }} <<Kubernetes Cluster>>{
-  args: {{ marshal .user.exec.args }}
- {{ if .nodes }}
-   {{ range $i, $n := .nodes }}
+Package {{ .Name | quote }} <<Kubernetes Cluster>>{
+ {{ if .Nodes }}
+   {{ range $i, $n := .Nodes }}
       {{ template "node.tmpl" $n }}
    {{ end }}
  {{ end }}
