@@ -1,0 +1,16 @@
+node {{ .metadata.name }}[
+    {{ .metadata.name }}
+    {{ .spec.providerID }}
+    if {{ .metadata.labels }}
+      labels
+      ---
+      range {{ $key, $value := .metadata.labels }}
+        {{ $key }}: {{ $value }}
+        ...
+      {{ end }}
+    {{ end }}
+    ===
+    if {{ .spec.taints }}
+      {{ template "taints.tmpl" .spec.taints }}
+    {{ end }}
+]

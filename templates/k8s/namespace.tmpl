@@ -1,0 +1,9 @@
+package {{ .namespace.name | quote }} <<Namespace>>{
+
+ if {{ .Deployments }}
+   {{ range $i, $d := .Deployments }}
+      {{ template "deployments.tmpl" $d }}
+   {{ end }}
+ {{ end }}
+
+}

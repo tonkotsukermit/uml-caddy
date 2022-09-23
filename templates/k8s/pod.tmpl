@@ -1,0 +1,22 @@
+node {{ .metadata.name | quote }} <<Pod>> {
+  {{ range $i, $c := .spec.containers }}
+  {{if $i}}==={{end}}
+    {{ if $c.name }}{{ $c.name }}{{ end }}
+    ...
+    {{ $c.image }}
+    ---
+    Ports
+    {{ range $idx, $p := $c.ports }}
+    {{ if $idx }}...{{end}}
+      - {{ if $p.name }}{{ $p.name }}{{ end }}
+        {{ if $p.containerPort }}{{ $p.containerPort }}{{ end }}
+    {{ end }}
+  {{ end }}
+  if {{ .spec.volumes }}
+  ===
+    {{ range $i, $v := .spec.volumes }}
+      name: {{ $v.name }}
+      {{ if $v.secret }} secret: {{ $v.secret }}{{ end }}
+      {{ if $v.configmap }} configmap: {{ $v.configmap }}{{ end }}
+  {{ end }}
+}
