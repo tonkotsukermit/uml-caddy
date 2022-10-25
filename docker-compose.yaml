@@ -1,0 +1,15 @@
+version: '3'
+services:
+  uml-caddy:
+    build:
+      context: .
+      dockerfile: ./build/uml-caddy/Dockerfile
+    ports:
+    - 8080:8080
+    volumes:
+      - ~/.kube/config:~/.kube/config
+
+  plant-uml:
+    image: plantuml/plantuml-server:jetty
+    ports:
+    - 9090:8080
