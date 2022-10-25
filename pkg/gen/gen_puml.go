@@ -13,7 +13,7 @@ import (
 
 const pumlEncode = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
 
-//GetPlantUMLPng retrieves the raw bytes of a png from a known plant uml generator url plantuml.com/plantuml/png/
+//GetPlantUMLPng retrieves the png from a known plant uml generator url plantuml.com/plantuml/png/
 func GetPlantUMLPng(puml string, url string) (image.Image , error) {
 
 	//compress
