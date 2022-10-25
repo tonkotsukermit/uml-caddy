@@ -8,8 +8,6 @@ ENV APP=uml-caddy
 
 RUN adduser \
     --disabled-password\
-    --gecos ""\
-    --home "/none"\
     --shell "sbin/nologin"\
     --no-create-home\
     --uid "${UID}"\
@@ -25,12 +23,14 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflag
 
 FROM golang:1.19-alpine
 
+WORKDIR $GOPATH/bin
+
 COPY --from=go /etc/passwd /etc/passwd
 COPY --from=go /etc/group /etc/group
 
 COPY --from=go /go/bin/$APP /go/bin/$APP
 
-COPY ./templates/ /go/bin/$APP/templates/
+COPY ./templates/ /go/bin/templates/
 
 USER $USER
 

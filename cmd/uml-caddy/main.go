@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"image/png"
 	"net/http"
 	"path/filepath"
 	"time"
@@ -14,8 +15,10 @@ import (
 	"k8s.io/client-go/util/homedir"
 )
 
-const purl = "plant-uml:8080"
-
+const (
+	purl = "http://plant-uml:8080"
+	port = ":8080"
+)
 
 func main() {
 
@@ -43,7 +46,7 @@ func main() {
 		r.Get("/k8s", generatek8sPNG)
 	})
 
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(port, r)
 
 }
 
@@ -63,6 +66,7 @@ func generatek8sPUML(w http.ResponseWriter, req *http.Request) {
 	err := u.GenerateK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		w.Write([]byte(err.Error()))
+		return
 	}
 
 }
@@ -85,14 +89,16 @@ func generatek8sPNG(w http.ResponseWriter, req *http.Request) {
 	err := u.GenerateK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		w.Write([]byte(err.Error()))
+		return
 	}
 
 	image, err := gen.GetPlantUMLPng(buf.String(), purl + "/png/")
 	if err != nil {
 		w.Write([]byte(err.Error()))
+		return
 	}
 
 	w.Header().Set("Content-Type", "image/png")
-	w.Write(image)
+	png.Encode(w, image)
 
 }

@@ -7,7 +7,7 @@ services:
     ports:
     - 8080:8080
     volumes:
-      - ~/.kube/config:~/.kube/config
+      - ~/.kube/config:/root/.kube/config
 
   plant-uml:
     image: plantuml/plantuml-server:jetty
