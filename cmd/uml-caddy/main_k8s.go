@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"image/png"
 	"net/http"
 	"path/filepath"
 
@@ -62,6 +61,6 @@ func generatek8sPNG(w http.ResponseWriter, req *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "image/png")
-	png.Encode(w, image)
+	w.Write(image)
 
 }

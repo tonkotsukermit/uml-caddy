@@ -3,8 +3,6 @@ package gen
 import (
 	"bytes"
 	"fmt"
-	"image"
-	"image/png"
 	"io"
 	"net/http"
 
@@ -14,7 +12,7 @@ import (
 const pumlEncode = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
 
 //GetPlantUMLPng retrieves the png from a known plant uml generator url plantuml.com/plantuml/png/
-func GetPlantUMLPng(puml string, url string) (image.Image , error) {
+func GetPlantUMLPng(puml string, url string) ([]byte , error) {
 
 	//compress
 	compressed, err := Deflate([]byte(puml))
@@ -33,13 +31,8 @@ func GetPlantUMLPng(puml string, url string) (image.Image , error) {
 	if err != nil {
 		return nil, err
 	}
-	
-	image, err := png.Decode(bytes.NewReader(body))
-	if err != nil {
-		return nil, err
-	}
 
-	return image, err
+	return body, err
 }
 
 
