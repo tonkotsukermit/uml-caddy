@@ -8,6 +8,7 @@ Uml-caddy is a tool for templating plantuml from known metadata
 - AWS S3 mapping/compatibility
 - Terraform State file compatibility
 - .tf file compatibility
+- k8s interface tests
 
 ## Running
 
@@ -19,11 +20,12 @@ The docker-compose file allows you to run standard docker commands to run the co
 
 ### Front
 
-- scanner interface
+
+- API scanner interface
     - k8s
     - terraform
-- cmd command
-- API interface
+    - AWS
+- Simple frontend webapp
 
 ### Middle
 
@@ -42,7 +44,20 @@ The docker-compose file allows you to run standard docker commands to run the co
         - S3
         - IAM (as data objects)
         - Databases
-- Model import interface
+    - AWS
+        - s3
+        - ec2
+        - VPC
+        - Subnets
+        - Route53
+        - LBs
+        - EKS
+        - ECR
+        - ECS
+        - Aurora
+        - Dynamodb
+- Template Model processing
+    - Gathering data from known sources
 
 ### Backend
 
