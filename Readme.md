@@ -9,6 +9,10 @@ Uml-caddy is a tool for templating plantuml from known metadata
 - Terraform State file compatibility
 - .tf file compatibility
 - k8s interface tests
+- Basic Frontend
+    - Visualization area
+    - Left hand bar navigation
+    - Upload utility
 
 ## Running
 
