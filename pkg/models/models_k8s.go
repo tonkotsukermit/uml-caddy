@@ -1,5 +1,10 @@
 package models
 
+func init(){
+  //TODO Build map[string]string of consts to dynamically lookup by const name
+  // {{ partial K8sVirtual .K8s }}
+}
+
 const K8sUMLBase = `
 @startuml {{ .Name | default "UML Output" }}
 
@@ -30,7 +35,7 @@ const NamespaceModel = `
 package {{ .Namespace.Name | quote }} <<Namespace>>{
 	{{ if .Deployments }}
 	  {{ range $i, $d := .Deployments }}
-		 {{ DeploymentModel $d }}
+    {{ partial $d }}
 	  {{ end }}
 	{{ end }}
    }
