@@ -5,7 +5,7 @@ import (
 	"io"
 
 	"github.com/chunk-hunkman/uml-caddy/pkg/importer"
-	"github.com/chunk-hunkman/uml-caddy/pkg/template"
+	"github.com/chunk-hunkman/uml-caddy/pkg/models"
 )
 
 
@@ -13,7 +13,7 @@ type UML struct {
 	Name		 string
 	Header		 string
 	Title		 string
-	TemplatePath string
+	Base         string 
 	Output		 io.Writer
 }
 
@@ -38,11 +38,11 @@ func (k *K8sUML) GenerateK8sUML(ctx context.Context, kubeconfig string) error{
 		return err
 	}
 
-	t := template.Template{
+	t := models.Template{
 		Name:   "puml.tmpl",
-		Path:   k.TemplatePath,
+		Base:   k.Base,
 		Output: k.Output,
 	}
 
-	return t.Execute(k)
+	return t.ExecuteUML(k)
 }

@@ -9,6 +9,7 @@ import (
 
 	"github.com/chunk-hunkman/uml-caddy/pkg/gen"
 	"github.com/chunk-hunkman/uml-caddy/pkg/uml"
+	"github.com/chunk-hunkman/uml-caddy/pkg/models"
 	"k8s.io/client-go/util/homedir"
 )
 
@@ -20,7 +21,7 @@ func generatek8sPUML(w http.ResponseWriter, req *http.Request) {
 			Name:         chi.URLParam(req, "name"),
 			Header:       chi.URLParam(req, "header"),
 			Title:        chi.URLParam(req, "title"),
-			TemplatePath: "templates/uml/virtual/k8s/",
+			Base:         models.K8sBase,
 			Output:       w,
 		},
 	}
@@ -43,7 +44,7 @@ func generatek8sPNG(w http.ResponseWriter, req *http.Request) {
 			Name:         chi.URLParam(req, "name"),
 			Header:       chi.URLParam(req, "header"),
 			Title:        chi.URLParam(req, "title"),
-			TemplatePath: "templates/uml/virtual/k8s/",
+			Base:         models.K8sBase,
 			Output:       buf,
 		},
 	}
