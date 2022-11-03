@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
@@ -11,18 +12,22 @@ import (
 	"k8s.io/client-go/util/homedir"
 )
 
+var kubeconfig string
+
+func init(){
+	if _, err := os.Stat(filepath.Join(homedir.HomeDir(), ".kube", "config")); err == nil {
+		//kubeconfig exists
+		kubeconfig = filepath.Join(homedir.HomeDir(), ".kube", "config")
+	} else {
+		//kubeconfig not present
+		kubeconfig = ""
+	}
+}
 
 // generateK8sPUML is an http handler that generates a .puml from a given request with query params of "name", "header", and "title"
 func generateK8sPUML(w http.ResponseWriter, req *http.Request) {
 
-	u := gen.K8sUML{
-		UML: gen.UML{
-			Name:         checkParam(chi.URLParam(req, "name")),
-			Header:       checkParam(chi.URLParam(req, "header")),
-			Title:        checkParam(chi.URLParam(req, "title")),
-			Output:       w,
-		},
-	}
+	u := newK8sPUML(w, req)
 
 	err := u.GenerateVirtualK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
@@ -37,16 +42,9 @@ func generateK8sPNG(w http.ResponseWriter, req *http.Request) {
 
 	buf := new(bytes.Buffer)
 
-	u := gen.K8sUML{
-		UML: gen.UML{
-			Name:         checkParam(chi.URLParam(req, "name")),
-			Header:       checkParam(chi.URLParam(req, "header")),
-			Title:        checkParam(chi.URLParam(req, "title")),
-			Output:       w,
-		},
-	}
+	u := newK8sPUML(w, req)
 
-	err := u.GenerateVirtualK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	err := u.GenerateVirtualK8sUML(req.Context(), kubeconfig)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
@@ -67,16 +65,9 @@ func generateK8sPNG(w http.ResponseWriter, req *http.Request) {
 // generateK8sInfraPUML is an http handler that generates a .puml from a given request with query params of "name", "header", and "title"
 func generateK8sInfraPUML(w http.ResponseWriter, req *http.Request) {
 
-	u := gen.K8sUML{
-		UML: gen.UML{
-			Name:         checkParam(chi.URLParam(req, "name")),
-			Header:       checkParam(chi.URLParam(req, "header")),
-			Title:        checkParam(chi.URLParam(req, "title")),
-			Output:       w,
-		},
-	}
+	u := newK8sPUML(w, req)
 
-	err := u.GenerateInfraK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	err := u.GenerateInfraK8sUML(req.Context(), kubeconfig)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
@@ -89,16 +80,9 @@ func generateK8sInfraPNG(w http.ResponseWriter, req *http.Request) {
 
 	buf := new(bytes.Buffer)
 
-	u := gen.K8sUML{
-		UML: gen.UML{
-			Name:         checkParam(chi.URLParam(req, "name")),
-			Header:       checkParam(chi.URLParam(req, "header")),
-			Title:        checkParam(chi.URLParam(req, "title")),
-			Output:       w,
-		},
-	}
+	u := newK8sPUML(w, req)
 
-	err := u.GenerateInfraK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	err := u.GenerateInfraK8sUML(req.Context(), kubeconfig)
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
@@ -112,5 +96,19 @@ func generateK8sInfraPNG(w http.ResponseWriter, req *http.Request) {
 
 	w.Header().Set("Content-Type", "image/png")
 	w.Write(image)
+
+}
+
+//newK8sPUML returns a standardized gen.K8sUML struct
+func newK8sPUML(w http.ResponseWriter, req *http.Request) gen.K8sUML {
+
+	return gen.K8sUML{
+		UML: gen.UML{
+			Name:         checkParam(chi.URLParam(req, "name")),
+			Header:       checkParam(chi.URLParam(req, "header")),
+			Title:        checkParam(chi.URLParam(req, "title")),
+			Output:       w,
+		},
+	}
 
 }

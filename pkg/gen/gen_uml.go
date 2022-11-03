@@ -57,7 +57,7 @@ func (k *K8sUML) GenerateInfraK8sUML(ctx context.Context, kubeconfig string) err
 
 	k.K8s = *kube
 
-	err = k.K8s.GetResources()
+	err = k.K8s.GetInfra()
 	if err != nil {
 		return err
 	}
