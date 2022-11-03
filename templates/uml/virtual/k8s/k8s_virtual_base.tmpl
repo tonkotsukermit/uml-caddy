@@ -1,7 +1,0 @@
-node {{ .Name | quote }} <<Kubernetes Cluster>>{
- {{ if .Namespaces }}
-   {{ range $i, $n := .Namespaces }}
-      {{ template "namespace.tmpl" $n }}
-   {{ end }}
- {{ end }}
-}

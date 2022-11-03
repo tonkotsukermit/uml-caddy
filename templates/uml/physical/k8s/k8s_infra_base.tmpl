@@ -1,8 +1,0 @@
-Package {{ .Name | quote }} <<Kubernetes Cluster>>{
- {{ if .Nodes }}
-   {{ range $i, $n := .Nodes }}
-      {{ template "node.tmpl" $n }}
-   {{ end }}
- {{ end }}
-
-}
