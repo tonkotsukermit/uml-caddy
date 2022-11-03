@@ -62,63 +62,63 @@ const CustomUMLBase = `
 - Add all necessary nested partials as constants, and reference them with the `{{ partial "PartialModelName" .Object }}` syntax
 - Add all constants to the model index at `./pkg/models/models_index.go` in the `models` package
     - Models index example:
-```golang
-models := map[string]string{
-    "K8sUMLVirtualBase":  K8sUMLVirtualBase,
-    "K8sVirtual":         K8sVirtual,
-    "NamespaceModel":     NamespaceModel,
-    "DeploymentModel":    DeploymentModel,
-    "PodModel":           PodModel,
-    "CustomUMLBase":      CustomUMLBase,
-}
-```
+        ```golang
+        models := map[string]string{
+            "K8sUMLVirtualBase":  K8sUMLVirtualBase,
+            "K8sVirtual":         K8sVirtual,
+            "NamespaceModel":     NamespaceModel,
+            "DeploymentModel":    DeploymentModel,
+            "PodModel":           PodModel,
+            "CustomUMLBase":      CustomUMLBase,
+        }
+        ```
 ----
 ----
 ### Using models 
 
 - (Optional) Extend the `UML` struct for a custom data object
     - Example struct extension:
-```golang
-type CustomUML struct {
-	UML
-	Data	importer.CustomResources //this assumes a new importer package associated with the custom resource
-}
-
-```
+        ```golang
+        type CustomUML struct {
+            UML
+            Data	importer.CustomResources 
+        }
+        ```
+        *Note: this assumes a new importer package associated with the custom resource*
 
 - Add a new generator function in the `gen` package
     - Example Generator function:
-```golang
-func (c *CustomUML) GenerateCustomUML() error{
+        ```golang
+        func (c *CustomUML) GenerateCustomUML() error{
 
-data := c.Data.Get()
+        data := c.Data.Get()
 
-t := models.Template{
-    Model:  models.CustomUMLBase,
-    Output: c.Output,
-}
+        t := models.Template{
+            Model:  models.CustomUMLBase,
+            Output: c.Output,
+        }
 
-return t.Execute(data)
-```
+        return t.Execute(data)
+        ```
 - Import/Utilize the package in main 
     - Example main package function
-    ``` golang
-    func generateCustomPUML(w io.Writer){
+        ``` golang
+        func generateCustomPUML(w io.Writer){
 
-        u := gen.CustomUML{
-            UML: gen.UML{
-                Name:         "CustomName",
-                Header:       "CustomHeader",
-                Title:        "CustomTitle",
-                Output:       w,
-            },
+            u := gen.CustomUML{
+                UML: gen.UML{
+                    Name:         "CustomName",
+                    Header:       "CustomHeader",
+                    Title:        "CustomTitle",
+                    Output:       w,
+                },
+            }
+
+            err := u.GenerateCustomUML()
+            if err != nil {
+                w.Write([]byte(err.Error()))
+                return
+            }
+
         }
-
-        err := u.GenerateCustomUML()
-        if err != nil {
-            w.Write([]byte(err.Error()))
-            return
-        }
-
-    }
-    ```
+        ```
