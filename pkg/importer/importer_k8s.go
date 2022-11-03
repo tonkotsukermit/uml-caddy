@@ -15,9 +15,10 @@ import (
 
 type K8sResources struct {
   Namespaces  []Namespace
-  Name      string
-  Context   context.Context
-  Client    *kubernetes.Clientset
+  Nodes       []Node
+  Name        string
+  Context     context.Context
+  Client      *kubernetes.Clientset
 
 } 
 
@@ -25,6 +26,11 @@ type Namespace struct {
 	Namespace	corev1.Namespace
 	Deployments	[]appsv1.Deployment
 }
+
+type Node struct {
+	Node	corev1.Node
+}
+
 
 
 func buildConfig(kubeconfig string) (*rest.Config, error) {
@@ -90,6 +96,26 @@ func (k *K8sResources)GetResources() error {
 		ns.Deployments = list.Items
 		
 		k.Namespaces = append(k.Namespaces, ns)
+
+	}
+
+	return nil
+}
+
+//GetInfra retrieves all the pre-configured infrastructure resources to populate the struct utilizing the built in k8s client
+func (k *K8sResources)GetInfra() error {
+
+	nodes, err := k.Client.CoreV1().Nodes().List(k.Context, metav1.ListOptions{})
+	if err != nil {
+		return err
+	}
+
+	//append namespaces and deployments to []Namespace
+	for _, n := range nodes.Items {
+
+		n := Node{Node: n}
+		
+		k.Nodes = append(k.Nodes, n)
 
 	}
 
