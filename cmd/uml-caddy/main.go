@@ -31,13 +31,13 @@ func main() {
 
 	r.Route("/puml", func(r chi.Router) {
 
-		r.Get("/k8s", generatek8sPUML)
+		r.Get("/k8s", generateK8sPUML)
 
 	})
 
 	r.Route("/png", func(r chi.Router){
 
-		r.Get("/k8s", generatek8sPNG)
+		r.Get("/k8s", generateK8sPNG)
 	})
 
 	http.ListenAndServe(port, r)

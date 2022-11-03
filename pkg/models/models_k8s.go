@@ -1,11 +1,6 @@
 package models
 
-func init(){
-  //TODO Build map[string]string of consts to dynamically lookup by const name
-  // {{ partial K8sVirtual .K8s }}
-}
-
-const K8sUMLBase = `
+const K8sUMLVirtualBase = `
 @startuml {{ .Name | default "UML Output" }}
 
 {{ if .Header}}
@@ -16,7 +11,7 @@ const K8sUMLBase = `
   title {{ .Title }}
 {{ end }}
 
-{{ k8sVirtual }}
+{{ partial "K8sVirtual" .K8s }}
 
 @enduml
 `
@@ -25,7 +20,7 @@ const K8sVirtual = `
 node {{ .Name | quote }} <<Kubernetes Cluster>>{
 	{{ if .Namespaces }}
 	  {{ range $i, $n := .Namespaces }}
-		 {{ NamespaceModel }}
+     {{ partial "NamespaceModel" $n }}
 	  {{ end }}
 	{{ end }}
    }
@@ -35,7 +30,7 @@ const NamespaceModel = `
 package {{ .Namespace.Name | quote }} <<Namespace>>{
 	{{ if .Deployments }}
 	  {{ range $i, $d := .Deployments }}
-    {{ partial $d }}
+    {{ partial "DeploymentModel" $d }}
 	  {{ end }}
 	{{ end }}
    }
@@ -43,7 +38,7 @@ package {{ .Namespace.Name | quote }} <<Namespace>>{
 
 const DeploymentModel = `
 frame {{ .ObjectMeta.Name }} as "{{ .ObjectMeta.Name }} rep {{ .Spec.Replicas }}" <<Deployment>> {
-	{{ template "pod.tmpl" .Spec.Template }}
+	{{ partial "PodModel" .Spec.Template }}
   }
 `
 

@@ -1,7 +1,0 @@
-package {{ .Namespace.Name | quote }} <<Namespace>>{
- {{ if .Deployments }}
-   {{ range $i, $d := .Deployments }}
-      {{ template "deployment.tmpl" $d }}
-   {{ end }}
- {{ end }}
-}

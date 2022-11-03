@@ -8,25 +8,23 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"github.com/chunk-hunkman/uml-caddy/pkg/gen"
-	"github.com/chunk-hunkman/uml-caddy/pkg/uml"
-	"github.com/chunk-hunkman/uml-caddy/pkg/models"
 	"k8s.io/client-go/util/homedir"
 )
 
-// generatek8sPUML is an http hanlder that generates a .puml from a given request with query params of "name", "header", and "title"
-func generatek8sPUML(w http.ResponseWriter, req *http.Request) {
 
-	u := uml.K8sUML{
-		UML: uml.UML{
-			Name:         chi.URLParam(req, "name"),
-			Header:       chi.URLParam(req, "header"),
-			Title:        chi.URLParam(req, "title"),
-			Base:         models.K8sBase,
+// generateK8sPUML is an http handler that generates a .puml from a given request with query params of "name", "header", and "title"
+func generateK8sPUML(w http.ResponseWriter, req *http.Request) {
+
+	u := gen.K8sUML{
+		UML: gen.UML{
+			Name:         checkParam(chi.URLParam(req, "name")),
+			Header:       checkParam(chi.URLParam(req, "header")),
+			Title:        checkParam(chi.URLParam(req, "title")),
 			Output:       w,
 		},
 	}
 
-	err := u.GenerateK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	err := u.GenerateVirtualK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
@@ -34,22 +32,21 @@ func generatek8sPUML(w http.ResponseWriter, req *http.Request) {
 
 }
 
-// generatek8sPNG is an http hanlder that generates a .png from plant uml from a given request with query params of "name", "header", and "title"
-func generatek8sPNG(w http.ResponseWriter, req *http.Request) {
+// generateK8sPNG is an http handler that generates a .png from plant uml from a given request with query params of "name", "header", and "title"
+func generateK8sPNG(w http.ResponseWriter, req *http.Request) {
 
 	buf := new(bytes.Buffer)
 
-	u := uml.K8sUML{
-		UML: uml.UML{
-			Name:         chi.URLParam(req, "name"),
-			Header:       chi.URLParam(req, "header"),
-			Title:        chi.URLParam(req, "title"),
-			Base:         models.K8sBase,
-			Output:       buf,
+	u := gen.K8sUML{
+		UML: gen.UML{
+			Name:         checkParam(chi.URLParam(req, "name")),
+			Header:       checkParam(chi.URLParam(req, "header")),
+			Title:        checkParam(chi.URLParam(req, "title")),
+			Output:       w,
 		},
 	}
 
-	err := u.GenerateK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	err := u.GenerateVirtualK8sUML(req.Context(), filepath.Join(homedir.HomeDir(), ".kube", "config"))
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return

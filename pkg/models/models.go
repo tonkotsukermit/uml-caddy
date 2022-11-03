@@ -2,6 +2,7 @@ package models
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"text/template"
 
@@ -11,7 +12,6 @@ import (
 
 type Template struct {
 	Name	string
-	Base    string
 	Model   string
 	Output	io.Writer
 }
@@ -19,9 +19,7 @@ type Template struct {
 // Execute executes a templating function with a default sprig implementation to the provided io,Writer
 func (t *Template) Execute(data any) error {
 
-	// This example illustrates that the FuncMap *must* be set before the
-	// templates themselves are loaded.
-	tpl, err := template.New(t.Name).Funcs(sprig.FuncMap()).Parse(t.Model)
+	tpl, err := template.New(t.Name).Funcs(t.funcMap()).Parse(t.Model)
 	if err != nil {
 		return err
 	}
@@ -29,26 +27,43 @@ func (t *Template) Execute(data any) error {
 	return tpl.Execute(t.Output, data)
 }
 
-// ExecuteUML executes a templating function with a default sprig implementation and a given base of template.Base to the provided io,Writer
-func (t *Template) ExecuteUML(data any) error {
+func (t *Template) retrieveModel(s string) (string, error){
 
-	// This example illustrates that the FuncMap *must* be set before the
-	// templates themselves are loaded.
-	tpl, err := template.New(t.Name).Funcs(t.FuncMap()).Parse(t.Model)
-	if err != nil {
-		return err
+	i := loadIndex()
+
+	if i[s] != ""{
+		return i[s], nil
 	}
 
-	return tpl.Execute(t.Output, data)
+	return "", errors.New("Could not find model " + s)
+
 }
 
-func (t *Template) runPartial(modelName string, data any) (string, error) {
+func (t *Template) funcMap() template.FuncMap {
+
+	s := sprig.FuncMap()
+	
+	//TODO: needs to run a function that accepts a parameter that can bring down and template the constants
+	f := template.FuncMap{
+		"partial": t.partial,
+	}
+
+	maps.Copy(f, s)
+
+	return f
+
+}
+
+func (t *Template) partial(modelName string, data any) (string, error) {
 
 	buf := new(bytes.Buffer)
 
-	//todo build string map and lookup model by modelname
+	m, err := t.retrieveModel(modelName)
+	if err != nil {
+		return "", err
+	}
 
-	tpl, err := template.New(modelName).Funcs(t.FuncMap()).Parse(modelName)
+	tpl, err := template.New(modelName).Funcs(t.funcMap()).Parse(m)
 	if err != nil {
 		return "", err
 	}
@@ -59,20 +74,5 @@ func (t *Template) runPartial(modelName string, data any) (string, error) {
 	}
 
 	return buf.String(), nil
-
-}
-
-func (t *Template) FuncMap() template.FuncMap {
-
-	s := sprig.FuncMap()
-	
-	//TODO: needs to run a function that accepts a parameter that can bring down and template the constants
-	f := template.FuncMap{
-		"partial": t.runPartial,
-	}
-
-	maps.Copy(f, s)
-
-	return f
 
 }

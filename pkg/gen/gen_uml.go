@@ -1,4 +1,4 @@
-package uml
+package gen
 
 import (
 	"context"
@@ -13,7 +13,7 @@ type UML struct {
 	Name		 string
 	Header		 string
 	Title		 string
-	Base         string 
+	Model        string 
 	Output		 io.Writer
 }
 
@@ -22,7 +22,7 @@ type K8sUML struct {
 	K8s	importer.K8sResources
 }
 
-func (k *K8sUML) GenerateK8sUML(ctx context.Context, kubeconfig string) error{
+func (k *K8sUML) GenerateVirtualK8sUML(ctx context.Context, kubeconfig string) error{
 
 	r := importer.K8sResources{}
 
@@ -39,10 +39,9 @@ func (k *K8sUML) GenerateK8sUML(ctx context.Context, kubeconfig string) error{
 	}
 
 	t := models.Template{
-		Name:   "puml.tmpl",
-		Base:   k.Base,
+		Model:  models.K8sUMLVirtualBase,
 		Output: k.Output,
 	}
 
-	return t.ExecuteUML(k)
+	return t.Execute(k)
 }
