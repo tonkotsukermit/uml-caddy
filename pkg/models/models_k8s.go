@@ -32,7 +32,7 @@ const K8sUMLInfraBase = `
 @enduml`
 
 const K8sInfra = `
-Package {{ .Name | quote }} <<Kubernetes Cluster>>{
+Package {{ .Name | replace "-" "_" }} <<Kubernetes Cluster>>{
   {{ if .Nodes }}
     {{ range $i, $n := .Nodes }}
        {{ partial "K8sNode" $n }}
@@ -42,7 +42,7 @@ Package {{ .Name | quote }} <<Kubernetes Cluster>>{
  `
 
 const K8sVirtual = `
-node {{ .Name | quote }} <<Kubernetes Cluster>>{
+node {{ .Name | replace "-" "_"  }} <<Kubernetes Cluster>>{
 	{{ if .Namespaces }}
 	  {{ range $i, $n := .Namespaces }}
      {{ partial "NamespaceModel" $n }}
@@ -52,7 +52,7 @@ node {{ .Name | quote }} <<Kubernetes Cluster>>{
 `
 
 const NamespaceModel = `
-package {{ .Namespace.Name | quote }} <<Namespace>>{
+package {{ .Namespace.Name| replace "-" "_"  }} <<Namespace>>{
 	{{ if .Deployments }}
 	  {{ range $i, $d := .Deployments }}
     {{ partial "DeploymentModel" $d }}
@@ -62,7 +62,7 @@ package {{ .Namespace.Name | quote }} <<Namespace>>{
 `
 
 const DeploymentModel = `
-frame {{ .ObjectMeta.Name }} as "{{ .ObjectMeta.Name }} rep {{ .Spec.Replicas }}" <<Deployment>> {
+frame {{ .ObjectMeta.Name | replace "-" "_"  }} as "{{ .ObjectMeta.Name }} rep {{ .Spec.Replicas }}" <<Deployment>> {
 	{{ partial "PodModel" .Spec.Template }}
   }
 `
@@ -100,20 +100,21 @@ collections {{ if .ObjectMeta.Name }}{{ .ObjectMeta.Name }}{{ else }} Pod {{ end
 `
 
 const K8sNode = `
-node {{ .metadata.name }}[
-    {{ .metadata.name }}
-    {{ .spec.providerID }}
-    {{ if .metadata.labels }}
+node {{ .Node.ObjectMeta.Name | replace "-" "_" }} <<Node>> [
+    {{ .Node.ObjectMeta.Name }}
+    {{- if .Node.Spec.ProviderID }}{{ .Node.Spec.ProviderID }}{{- end}}
+    Unschedulable: {{ .Node.Spec.Unschedulable }}
+    {{ if .Node.ObjectMeta.Labels }}
       labels
       ---
-      {{ range $key, $value := .metadata.labels }}
+      {{ range $key, $value := .Node.ObjectMeta.Labels }}
         {{ $key }}: {{ $value }}
         ...
       {{ end }}
     {{ end }}
     ===
-    {{ if .spec.taints }}
-      {{ partial "K8sTaints" .spec.taints }}
+    {{ if .Node.Spec.Taints }}
+      {{ partial "K8sTaints" .Node.Spec.Taints }}
     {{ end }}
 ]
 `
