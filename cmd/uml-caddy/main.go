@@ -33,11 +33,17 @@ func main() {
 
 		r.Get("/k8s", generateK8sPUML)
 
+		//TODO finish importer implementation for infra
+		r.Get("/k8sInfra", generateK8sInfraPUML)
+
 	})
 
 	r.Route("/png", func(r chi.Router){
 
 		r.Get("/k8s", generateK8sPNG)
+
+		//TODO finish importer implementation for infra
+		r.Get("/k8sInfra", generateK8sInfraPNG)
 	})
 
 	http.ListenAndServe(port, r)
