@@ -1,0 +1,89 @@
+info:
+  contact: {}
+  description: Automatically generate UML diagrams
+  license:
+    name: GNU GENERAL PUBLIC LICENSE Version 3
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  title: UML-Caddy
+paths:
+  /png/k8s:
+    get:
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: header
+        in: query
+        name: header
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: OK
+      summary: Generate a k8s infrastructure uml png
+  /png/k8sInfra:
+    get:
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: header
+        in: query
+        name: header
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: OK
+      summary: Generate a k8s infrastructure uml png
+  /puml/k8s:
+    get:
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: header
+        in: query
+        name: header
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      responses:
+        "200":
+          description: OK
+      summary: Generate a k8s virtual puml document
+  /puml/k8sInfra:
+    get:
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: header
+        in: query
+        name: header
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      responses:
+        "200":
+          description: OK
+      summary: Generate a k8s infrastructure puml document
+swagger: "2.0"

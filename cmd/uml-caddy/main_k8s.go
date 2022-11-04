@@ -6,8 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/go-chi/chi/v5"
-
 	"github.com/chunk-hunkman/uml-caddy/pkg/gen"
 	"k8s.io/client-go/util/homedir"
 )
@@ -25,6 +23,12 @@ func init(){
 }
 
 // generateK8sPUML is an http handler that generates a .puml from a given request with query params of "name", "header", and "title"
+// @Summary      Generate a k8s virtual puml document
+// @Param        name   query     string  false  "name"
+// @Param        header query     string  false  "header"
+// @Param        title  query     string  false  "title"
+// @Success      200
+// @Router       /puml/k8s [get]
 func generateK8sPUML(w http.ResponseWriter, req *http.Request) {
 
 	u := newK8sPUML(w, req)
@@ -38,6 +42,13 @@ func generateK8sPUML(w http.ResponseWriter, req *http.Request) {
 }
 
 // generateK8sPNG is an http handler that generates a .png from plant uml from a given request with query params of "name", "header", and "title"
+// @Summary      Generate a k8s infrastructure uml png
+// @Produce      image/png
+// @Param        name   query     string  false  "name"
+// @Param        header query     string  false  "header"
+// @Param        title  query     string  false  "title"
+// @Success      200
+// @Router       /png/k8s [get]
 func generateK8sPNG(w http.ResponseWriter, req *http.Request) {
 
 	buf := new(bytes.Buffer)
@@ -63,6 +74,12 @@ func generateK8sPNG(w http.ResponseWriter, req *http.Request) {
 
 
 // generateK8sInfraPUML is an http handler that generates a .puml from a given request with query params of "name", "header", and "title"
+// @Summary      Generate a k8s infrastructure puml document
+// @Param        name   query     string  false  "name"
+// @Param        header query     string  false  "header"
+// @Param        title  query     string  false  "title"
+// @Success      200
+// @Router       /puml/k8sInfra [get]
 func generateK8sInfraPUML(w http.ResponseWriter, req *http.Request) {
 
 	u := newK8sPUML(w, req)
@@ -76,6 +93,13 @@ func generateK8sInfraPUML(w http.ResponseWriter, req *http.Request) {
 }
 
 // generateK8sInfraPNG is an http handler that generates a .png from plant uml from a given request with query params of "name", "header", and "title"
+// @Summary      Generate a k8s infrastructure uml png
+// @Produce      image/png
+// @Param        name   query     string  false  "name"
+// @Param        header query     string  false  "header"
+// @Param        title  query     string  false  "title"
+// @Success      200
+// @Router       /png/k8sInfra [get]
 func generateK8sInfraPNG(w http.ResponseWriter, req *http.Request) {
 
 	buf := new(bytes.Buffer)
@@ -104,9 +128,9 @@ func newK8sPUML(w http.ResponseWriter, req *http.Request) gen.K8sUML {
 
 	return gen.K8sUML{
 		UML: gen.UML{
-			Name:         checkParam(chi.URLParam(req, "name")),
-			Header:       checkParam(chi.URLParam(req, "header")),
-			Title:        checkParam(chi.URLParam(req, "title")),
+			Name:         checkParam(req.URL.Query().Get("name")),
+			Header:       checkParam(req.URL.Query().Get("header")),
+			Title:        checkParam(req.URL.Query().Get("title")),
 			Output:       w,
 		},
 	}
