@@ -1,0 +1,140 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Automatically generate UML diagrams",
+        "title": "UML-Caddy",
+        "contact": {},
+        "license": {
+            "name": "GNU GENERAL PUBLIC LICENSE Version 3",
+            "url": "https://www.gnu.org/licenses/gpl-3.0.en.html"
+        }
+    },
+    "paths": {
+        "/png/k8s": {
+            "get": {
+                "produces": [
+                    "image/png"
+                ],
+                "summary": "Generate a k8s infrastructure uml png",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "header",
+                        "name": "header",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "title",
+                        "name": "title",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/png/k8sInfra": {
+            "get": {
+                "produces": [
+                    "image/png"
+                ],
+                "summary": "Generate a k8s infrastructure uml png",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "header",
+                        "name": "header",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "title",
+                        "name": "title",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/puml/k8s": {
+            "get": {
+                "summary": "Generate a k8s virtual puml document",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "header",
+                        "name": "header",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "title",
+                        "name": "title",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/puml/k8sInfra": {
+            "get": {
+                "summary": "Generate a k8s infrastructure puml document",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "header",
+                        "name": "header",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "title",
+                        "name": "title",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}

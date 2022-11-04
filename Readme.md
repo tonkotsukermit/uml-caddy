@@ -16,6 +16,7 @@ The docker-compose file allows you to run standard docker commands to run the co
 - Docker
 - Docker-compose
 - PlantUML
+- [Swaggo](https://github.com/swaggo/swag): `go install github.com/swaggo/swag/cmd/swag@latest`
 
 ### vscode
 
@@ -35,7 +36,7 @@ Example `launch.json`
     ]
 }
 ```
-----
+---
 ### Adding new models (Pre-DB implementation)
 
 - (Optional) add a new `./pkg/models.models_<system>.go` file in the `models` package
@@ -72,8 +73,7 @@ const CustomUMLBase = `
             "CustomUMLBase":      CustomUMLBase,
         }
         ```
-----
-----
+
 ### Using models 
 
 - (Optional) Extend the `UML` struct for a custom data object
@@ -122,3 +122,9 @@ const CustomUMLBase = `
 
         }
         ```
+---
+### Swagger
+
+The swagger is generated via [swaggo](go install github.com/swaggo/swag/cmd/swag@latest)
+
+Generate swagger with `swag init -d .\cmd\uml-caddy\`
